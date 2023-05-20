@@ -20,7 +20,9 @@ Asegúrate de tener las siguientes dependencias instaladas en tu sistema:
 
 3. Ejecute el siguiente comando para clonar el proyecto:
 
->>>>> git clone https://github.com/wtfranco22/drive.git
+```bash
+git clone https://github.com/wtfranco22/drive.git
+```
 
 
 ## Instalación
@@ -29,11 +31,15 @@ Asegúrate de tener las siguientes dependencias instaladas en tu sistema:
 
 2. Instale las dependencias de Composer ejecutando el siguiente comando:
 
->>>>> composer install
+```bash
+composer install
+```
 
 3. A continuación, instale las dependencias de Node.js ejecutando el siguiente comando:
 
->>>>> npm install
+```bash
+npm install
+```
 
 
 ## Configuración del entorno
@@ -44,7 +50,9 @@ Asegúrate de tener las siguientes dependencias instaladas en tu sistema:
 
 3. Genere una nueva clave de aplicación ejecutando el siguiente comando:
 
->>>>> php artisan key:generate
+```bash
+php artisan key:generate
+```
 
 
 ## Configuración de la base de datos
@@ -53,7 +61,9 @@ Asegúrate de tener las siguientes dependencias instaladas en tu sistema:
 
 2. Ejecute las migraciones y los seeders para crear la estructura de la base de datos y agregar datos de prueba ejecutando el siguiente comando:
 
->>>>> php artisan migrate --seed
+```bash
+php artisan migrate --seed
+```
 
 
 ## Ejecución
@@ -62,12 +72,16 @@ Asegúrate de tener las siguientes dependencias instaladas en tu sistema:
 
 2. En la primera terminal, ejecute el siguiente comando para compilar y ejecutar el frontend con Vue:
 
->>>>> npm run dev
+```bash
+npm run dev
+```
+
 
 3. En la segunda terminal, ejecute el siguiente comando para iniciar el servidor de desarrollo de Laravel:
 
->>>>> php artisan serve
-
+```bash
+php artisan serve
+```
 
 
 ## Acceso a la aplicación
@@ -102,6 +116,6 @@ Este proyecto está bajo la [Licencia MIT](LICENSE).
 
 Si tiene alguna pregunta o sugerencia, no dude en ponerse en contacto conmigo:
 
-- Correo electrónico: example@gmail.com
+- Correo electrónico: wtfranco22@gmail.com
 - [GitHub](https://github.com/wtfranco22)
 - [Whatsapp](+5492996017699)
