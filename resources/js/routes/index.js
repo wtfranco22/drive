@@ -6,7 +6,7 @@ import Folders from '@/pages/Folder.vue';
 import { useUserStore } from '@/stores/storeUser';
 
 const routes = [
-    { path: '/', name: 'Login', component: Login },
+    { path: '/Login', name: 'Login', component: Login },
     { path: '/Home', name: 'Home', component: Home },
     { path: '/Users', name: 'Users', component: Users },
     { path: '/Folders/:id', name: 'Folders', component: Folders },
@@ -21,12 +21,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const auth = useUserStore();
     if (to.name !== 'Login' && !auth.user.token) {
-        next('Login');
+        next('/Login');
     } else if (to.name === 'Login' && auth.user.token) {
-        next('Home');
+        next('/Home');
     } else {
         if ((to.name === 'Users') && auth.user.role !== 'admin') {
-            next('Home');
+            next('/Home');
         }
         next();
     }
