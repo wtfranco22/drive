@@ -6,7 +6,7 @@ import Folders from '@/pages/Folder.vue';
 import { useUserStore } from '@/stores/storeUser';
 
 const routes = [
-    { path: '/', name: 'Login', component: Login },
+    { path: '/Login', name: 'Login', component: Login },
     { path: '/Home', name: 'Home', component: Home },
     { path: '/Users', name: 'Users', component: Users },
     { path: '/Folders/:id', name: 'Folders', component: Folders },
