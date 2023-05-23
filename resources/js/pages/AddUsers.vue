@@ -2,16 +2,23 @@
 import { useUserStore } from '../stores/storeUser';
 import { ref, onMounted } from 'vue';
 const store = useUserStore();
-const selectedUser = ref();
-onMounted(async () => {
-    if(store.user.role=='admin'){
-        await store.getUsers()
-        console.log(store.users)
+const selectedUser = ref(null);
+const loadUsers = async () => {
+    if (store.user.role == 'admin') {
+        await store.getUsers(false);
+        console.log(store.usersNotAccess)
     };
+};
+onMounted(() => {
+    const modalElement = document.getElementById('addUser');
+    if (modalElement) {
+        modalElement.addEventListener('shown.bs.modal', loadUsers);
+    }
 });
 const addUserToFolder = async () => {
-    if (await store.addUserToFolder(selectedUser.value) || true ){
+    if (await store.addUserToFolder(selectedUser.value) || true) {
         bootstrap.Modal.getInstance(document.getElementById('addUser')).hide();
+        location.reload()
     }
 }
 </script>
@@ -27,9 +34,9 @@ const addUserToFolder = async () => {
                     <form class="">
                         <div class="form-group m-5">
                             <label for="usuario">Usuario:</label>
-                            <select class="form-select" id="usuario" v-model="selectedUser">
-                                <option v-for="usuario in store.users" :value="usuario.id" :key="usuario.id">
-                                    {{ usuario.name }}
+                            <select class="form-select" v-model="selectedUser">
+                                <option v-for="user in store.usersNotAccess" :value="user.id" :key="user.id">
+                                    {{ user.name }}
                                 </option>
                             </select>
                         </div>

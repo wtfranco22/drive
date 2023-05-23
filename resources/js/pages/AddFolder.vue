@@ -1,10 +1,12 @@
 <script setup>
 import { useUserStore } from '../stores/storeUser';
 import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css';
 import { ref } from 'vue';
 const store = useUserStore();
 const addFolder = async () => {
+    folder.value.startDate = formatearFecha(new Date(folder.value.startDate));
+    folder.value.endDate = formatearFecha(new Date(folder.value.endDate));
     if (await store.newFolder(folder.value) || true) {
         bootstrap.Modal.getInstance(document.getElementById('addFolder')).hide();
     }

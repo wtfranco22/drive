@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FileFolderUser;
 use App\Models\Folder;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 
 class FolderController extends Controller
@@ -41,20 +41,22 @@ class FolderController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->authorize('folders');
+        $this->authorize('folders');
         $request->validate([
             'name' => 'required',
             'description' => 'required',
             'start_date' =>'required',
-            'url' => 'required',
             'end_date' =>'required'
         ]);
         $newFolder = new Folder();
         $newFolder->name = $request->name;
         $newFolder->description = $request->description;
-        $newFolder->img = 'Generar Imagen';
-        $newFolder->url = 'url-imagen-a-generar';
-        return response()->json(['success' => $newFolder->save()]);
+        $dateObjStart = DateTime::createFromFormat("d-m-Y", $request->start_date);
+        $dateObjEnd = DateTime::createFromFormat("d-m-Y", $request->end_date);
+        $newFolder->start_date = $dateObjStart->format("Y-m-d");
+        $newFolder->end_date = $dateObjEnd->format("Y-m-d");
+        $newFolder->url = 'prueba de la url solicitada';
+        return response()->json(['success' =>  $newFolder->save()]);
     }
 
     public function show($id)

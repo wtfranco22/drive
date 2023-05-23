@@ -13,6 +13,7 @@ export const useUserStore = defineStore('user', () => {
     const route = useRoute();
     const folders = ref(false);
     const users = ref(false);
+    const usersNotAccess = ref(false);
     const files = ref(false);
     const loading = ref(false);
     const login = async (userFormData) => {
@@ -69,7 +70,6 @@ export const useUserStore = defineStore('user', () => {
                 if (response.data) {
                     let data = response.data.folders;
                     folders.value = data
-                    console.log(response.data);
                 }
             })
             .catch(error => {
@@ -140,10 +140,10 @@ export const useUserStore = defineStore('user', () => {
             });
         loading.value = false;
     }
-    const getUsers = async () => {
+    const getUsers = async (withAccess) => {
         loading.value = true;
-        const route = useRoute();
         let folderId = route.params.id;
+        let urlHttp = (withAccess) ? 'url' : 'http://localhost:8000/api/folders/no-access/' + folderId;
         await axios({
             headers: {
                 'Accept': 'application/json',
@@ -154,18 +154,22 @@ export const useUserStore = defineStore('user', () => {
                 'Authorization': 'Bearer ' + user.value.token
             },
             method: 'GET',
-            url: 'http://localhost:8000/api/folders/no-access/' + folderId,
+            url: urlHttp,
         })
             .then(response => {
-                if (response.data) {
-                    let data = response.data;
-                    users.value = data.users;
+                if (response) {
+                    if (withAccess) {
+                        users.value = response.data.users;
+                    } else {
+                        usersNotAccess.value = response.data.users;
+                    }
                 }
             })
             .catch(error => {
                 console.log(error);
             });
         loading.value = false;
+        return true;
     };
     const downloadFile = async (fileId) => {
         loading.value = true;
@@ -213,11 +217,13 @@ export const useUserStore = defineStore('user', () => {
             method: 'GET',
             url: 'http://localhost:8000/api/logout'
         })
-            .then(response => {
-                console.log(response.data);
+            .then(() => {
                 user.value.token = null;
                 user.value.name = null;
                 user.value.role = null;
+                folders.value = false;
+                users.value = false;
+                files.value = false;
                 sessionStorage.removeItem('token');
                 sessionStorage.removeItem('name');
                 sessionStorage.removeItem('role');
@@ -274,6 +280,7 @@ export const useUserStore = defineStore('user', () => {
         return registrado;
     };
     const newFolder = async (folderData) => {
+        console.log(folderData)
         await axios({
             headers: {
                 'Accept': 'application/json',
@@ -285,18 +292,46 @@ export const useUserStore = defineStore('user', () => {
                 'Authorization': 'Bearer ' + user.value.token
             },
             method: 'POST',
-            url: 'http://localhost:8000/api/folders',
+            url: 'http://localhost:8000/api/new-folder',
             data: {
                 name: folderData.name,
-                url: folderData.url,
                 description: folderData.description,
                 start_date: folderData.startDate,
                 end_date: folderData.endDate
             }
         })
             .then(response => {
-                if (response.data.status) {
-                    router.push('/');
+                if (response.data) {
+                    folders.value = false;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
+    const newFile = async (fileData) => {
+        let folderId = route.params.id;
+        await axios({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+                'Authorization': 'Bearer ' + user.value.token
+            },
+            method: 'POST',
+            url: 'http://localhost:8000/api/files',
+            data: {
+                name: fileData.name,
+                format: fileData.format,
+                id_folder: folderId,
+            }
+        })
+            .then(response => {
+                if (response.data) {
+                    console.log(response.data)
                 }
             })
             .catch(error => {
@@ -306,6 +341,7 @@ export const useUserStore = defineStore('user', () => {
     return {
         user,
         users,
+        usersNotAccess,
         files,
         folders,
         loading,
@@ -314,6 +350,7 @@ export const useUserStore = defineStore('user', () => {
         getFiles,
         getUsers,
         newFolder,
+        newFile,
         registerUser,
         logout,
         addUserToFolder,

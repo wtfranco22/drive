@@ -21,12 +21,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const auth = useUserStore();
     if (to.name !== 'Login' && !auth.user.token) {
-        next('Login');
+        next('/Login');
     } else if (to.name === 'Login' && auth.user.token) {
-        next('Home');
+        next('/Home');
     } else {
         if ((to.name === 'Users') && auth.user.role !== 'admin') {
-            next('Home');
+            next('/Home');
         }
         next();
     }

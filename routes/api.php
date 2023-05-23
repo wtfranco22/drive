@@ -26,11 +26,11 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('my-files/{folder}', [UserController::class,'myFiles']);
     Route::post('logout',[AuthController::class,'logout']);
     
-    // Route::resource('folders', FolderController::class)->only('index','store');
     Route::get('folders',[FolderController::class,'index']);
     Route::get('folders/{id}',[FolderController::class,'show']);
     Route::get('folders/no-access/{id}',[FolderController::class,'noFolderAccess']);
+    Route::post('new-folder',[FolderController::class,'store']);
     Route::post('folder-user/add-user',[FolderUserController::class,'folderUserAccess']);
-    Route::resource('files', FileController::class)->only('store');
+    Route::post('files', [FileController::class,'store']);
     Route::post('status-file',[UserController::class,'updateStatusFile']);
 });

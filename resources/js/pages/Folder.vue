@@ -22,10 +22,10 @@ const downloadFile = async (id) => {
     <div v-else class="d-flex justify-content-between align-items-center mt-5">
         <h1 class="m-3">Listado de archivos</h1>
         <button v-if="store.user.role == 'admin'" type="button" class="btn btn-light border me-3" data-bs-toggle="modal"
-            data-bs-target="#addUser">Agregar
-            usuario</button>
+            data-bs-target="#addUser">Agregar usuario</button>
+        <button v-if="store.user.role == 'admin'" type="button" class="btn btn-light border me-3" data-bs-toggle="modal"
+            data-bs-target="#addFile">Agregar Archivo</button>
     </div>
-
     <div v-if="store.files !== false && store.user.role == 'user'">
         <table class="table">
             <thead>
@@ -63,25 +63,29 @@ const downloadFile = async (id) => {
         </table>
     </div>
     <div v-if="store.files !== false && store.user.role == 'admin'">
-        <table class="table">
+        <table class="table my-5">
             <thead>
                 <tr>
-                    <th scope="col"></th>
+                    <th scope="col">#</th>
                     <th scope="col">Archivos de la carpeta</th>
-                    <th scope="col">total en carpeta</th>
-                    <th scope="col">{{ store.files.length }}</th>
+                    <th scope="col">total de archivos: {{ store.files.length }}</th>
                 </tr>
             </thead>
             <tbody>
-                <template v-for="file in store.files" :key="file.id">
+                <template v-if="store.files.length == 0">
                     <tr>
-                        <th scope="row">{{ file.format }}</th>
-                        <td colspan="3">{{ file.name }}</td>
+                        <td colspan="3"> No hay archivos en la carpeta</td>
+                    </tr>
+                </template>
+                <template v-else v-for="file, index in store.files" :key="file.id">
+                    <tr>
+                        <th scope="row">{{ index + 1 }}</th>
+                        <td colspan="2">{{ file.name }} . {{ file.format }}</td>
                     </tr>
                 </template>
             </tbody>
         </table>
-        <table class="table">
+        <table class="table my-5">
             <thead>
                 <tr>
                     <th colspan="3">Usuarios con permisos</th>
@@ -95,7 +99,7 @@ const downloadFile = async (id) => {
                 </tr>
             </thead>
             <tbody>
-                <template v-for="user in store.users" :key="user.id">
+                <template v-if="store.users.length != 0" v-for="user in store.users" :key="user.id">
                     <tr>
                         <td>{{ user.user.name }}</td>
                         <td>{{ user.user.email }}</td>
@@ -103,6 +107,11 @@ const downloadFile = async (id) => {
                         <td>{{ user.download }}</td>
                     </tr>
                 </template>
+                <template v-else>
+                    <tr><td colspan="4">No hay usuarios con permisos</td>
+                    </tr>
+                </template>
+
             </tbody>
         </table>
     </div>

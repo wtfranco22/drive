@@ -1,15 +1,15 @@
 <script setup>
 import { useUserStore } from '../stores/storeUser';
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 const store = useUserStore();
 const addFileToFolder = async () => {
-    if (await store.addFileToFolder(selectedUser.value) || true) {
+    if (await store.newFile(file.value) || true) {
         bootstrap.Modal.getInstance(document.getElementById('addFile')).hide();
+        location.reload();
     }
 }
 const file = ref({
     name:'',
-    url:'',
     format:'',
 })
 </script>
@@ -26,10 +26,6 @@ const file = ref({
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control rounded-3" v-model="file.name">
                             <label for="name">Nombre</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control rounded-3" v-model="file.url">
-                            <label for="url">Link</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control rounded-3" v-model="file.format">

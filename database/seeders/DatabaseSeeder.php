@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(FolderSeeder::class);
-        $this->call(FolderUserSeeder::class);
+        // $this->call(FolderUserSeeder::class);
         $this->call(FileSeeder::class);
-        $this->call(FileFolderUserSeeder::class);
+        // $this->call(FileFolderUserSeeder::class);
     }
 }

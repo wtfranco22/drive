@@ -26,12 +26,6 @@ const salir = async () =>{
           <router-link v-if="store.user.role=='admin'" to="/users" class="text-decoration-none">
             <a class="nav-link text-white me-md-2" href="#">Usuarios</a>
           </router-link>
-          <router-link v-if="store.user.token!==null" to="/profile" class="text-decoration-none">
-            <a class="nav-link text-white me-md-2" href="#">Perfil</a>
-          </router-link>
-          <router-link v-if="store.user.role=='admin'" to="/folders" class="text-decoration-none">
-            <a class="nav-link text-white me-md-2" href="#">Carpetas</a>
-          </router-link>
           <template v-if="store.user.token!==null">
             <a class="nav-link text-white d-block d-md-none" href="#" @click="salir">Salir</a>
           </template>

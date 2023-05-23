@@ -29,7 +29,7 @@ const showFolder = (id) =>{
         </div>
         <div>
             <div v-if="store.folders !== false" class="album py-5 bg-body-tertiary">
-                <div class="container">
+                <div v-if="store.folders.length!=0" class="container">
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                         <template v-for="(folder) in store.folders" :key="folder.id">
                             <div class="col">
@@ -51,6 +51,9 @@ const showFolder = (id) =>{
                             </div>
                         </template>
                     </div>
+                </div>
+                <div v-else class="container">
+                    No hay carpetas autorizadas por el admin
                 </div>
             </div>
         </div>
